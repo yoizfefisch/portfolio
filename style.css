@@ -1,0 +1,235 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  max-width: 1920px;
+  margin: auto;
+}
+
+.main-nav{
+  max-width: 1920px;
+  margin: auto;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background: #E46700;
+  z-index: 10;
+  font-family: 'Playfair Display', serif;
+}
+
+.home-button {
+  display: block;
+  text-align: center;
+  min-width: 200px;
+  font-size: 1.5em;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.navigation {
+  min-width: 400px;
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  font-size: 4.5vw;
+}
+
+.button {
+  display: inline-block; /*Avoids margin collapse*/
+  padding: 10px;
+  margin: 0 2px;
+  border-radius: 8px;
+  background: #E46700;
+  box-sizing: border-box;
+  font-weight: 400;
+}
+
+.button:hover {
+  box-shadow: 0 0 5px 1px #42180A;
+  font-weight: 700;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 0;
+  text-align: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+#welcome-section {
+  background: url("http://image.ibb.co/maUfnH/leaf.jpg") center fixed;
+  font-family: Rufina;
+}
+
+h1 {
+  font-size: 2.5em;
+  letter-spacing: 1.5px;
+  color: #42180A;
+  text-shadow: 
+    1px -1px 0 #FBB85D,
+    -1px 1px 0 #FBB85D,
+    -1px -1px 0 #FBB85D,
+    1px 1px 0 #FBB85D
+  ;
+}
+
+h1:hover {
+  color: #FBB85D;
+  text-shadow: 
+    2px -2px 0 #42180A,
+    -2px 2px 0 #42180A,
+    -2px -2px 0 #42180A,
+    2px 2px 0 #42180A
+  ;
+}
+
+h1, h2 {
+  box-shadow: 0 10px 10px #42180A;
+  border-radius: 50px;
+  padding: 5px 15px;
+  margin: 20px 15vw;
+}
+
+h1:hover, h2:hover {
+  box-shadow: 0 -10px 10px #42180A;
+}
+
+p {
+  margin: 16px;
+  word-spacing: .2em;
+  line-height: 1.8em;
+}
+
+span {
+  font-family: 'Pacifico';
+  text-align: right;
+}
+
+#projects {
+  background-color: #FBB85D;
+  color: #42180A;
+}
+
+.project-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: space-between;
+  margin: auto;
+}
+
+.project-tile {
+  flex: 0 1 500px;
+  min-width: 250px;
+  max-width: 85%;
+  padding-bottom: 5px;
+  margin: 25px auto;
+  background: #E46700;
+  box-shadow: 0 10px 20px #42180A;
+  text-align: center;
+}
+
+.project-tile:hover {
+  transform: scale(1.1);
+  position: relative; /*To make z-index work*/
+  z-index: 9; /*To hide neighboring tiles*/
+}
+
+.tile-details {
+  position: relative;
+}
+
+.tile-image {
+  width: 100%;
+}
+
+.tile-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: 0;
+  padding: 15px;
+  background: #E46700;
+  font-weight: 700;
+  opacity: 0;
+}
+
+.project-tile:hover .tile-text {
+  opacity: .8;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+#contact {
+  min-height: 85vh;
+}
+
+input, textarea {
+  display: block;
+  min-width: 250px;
+  width: 85%;
+  min-height: 30px;
+  margin: 0 auto 10px;
+  background: #ff9e40;
+  border: none;
+  resize: none;
+  padding: 5px;
+  overflow: hidden;
+}
+
+input.button {
+  display: block;
+  min-width: 250px;
+  width: 85%;
+  margin: auto; 
+}
+
+label {
+  display: block;
+  margin-left: 10%;
+  text-align: left;
+}
+
+input:focus, textarea:focus {
+  box-shadow: 0 0 15px 1px #c43c00;
+  outline: 0;
+}
+
+footer {
+  background-color: #42180A;
+  color: #E46700;
+  height: 15vh;
+  line-height: 15vh;
+  text-align: center;
+}
+
+@media only screen and (min-width: 400px) {
+    .navigation {
+      font-size: 18px;
+    }
+}
+
+@media only screen and (min-width: 650px) {
+  .main-nav {
+    justify-content: space-between;
+  }
+}
