@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - FCC Survey Form: Rate your day</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Survey Form | Rate Your Day</title>
+<script src="https://gitcdn.link/repo/freeCodeCamp/testable-projects-fcc/master/build/bundle.js"></script>
+<link rel="stylesheet" href="./survey.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<header>
+  <h1 id="title">Survey Form | Rate Your Day</h1>
+  <p id="description">Let the world know how your day was.</p>
+</header>
+<form class="survey-form" id="survey-form">
+  <p class="asterisk-required">Fields marked with an asterisk (*) are required.</p>
+  <section class="form-section" id="identify">
+    <h2>Tell us about yourself:</h2>
+    <hr>
+    <div class="label-input-parent xs" id="name-group">
+      <label for="name" class="label-input-label" id="name-label"><span>*Full name:</span></label>
+      <input type="text" class="input-block label-input-input" id="name" placeholder="Your full name" required>
+    </div>
+    <div class="label-input-parent xs" id="email-group">
+      <label for="email" class="label-input-label" id="email-label"><span>*Email address:</span></label>
+      <input type="email" class="input-block label-input-input" id="email" placeholder="Your email address" required>
+    </div>
+    <div class="label-input-parent xs" id="number-group">
+      <label for="number" class="label-input-label" id="number-label"><span>Age:</span></label>
+      <input type="number" class="input-block-small label-input-input" id="number" placeholder="Your age" min="12" max="125">
+    </div>
+    <div class="label-input-parent xs" id="dropdown-group">
+      <label for="dropdown" class="label-input-label" id="dropdown-label"><span>Gender:</span></label>
+      <select class="input-block-small label-input-input" id="dropdown">
+        <option disabled selected value="default">Please select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <fieldset class="label-input-parent sm" id="outlook-group">
+      <legend class="label-input-label" id="outlook-label"><span>Life outlook:</span></legend>
+      <ul class="input-list label-input-input" id="outlook-list">
+        <li>
+          <input type="radio" name="outlook" value="optimist" id="optimist">
+          <label for="optimist">Optimistic</label>
+        </li>
+        <li>
+          <input type="radio" name="outlook" value="realist" id="realist">
+          <label for="realist">Realistic</label>
+        </li>
+        <li>
+          <input type="radio" name="outlook" value="pessimist" id="pessimist">
+          <label for="pessimist">Pessimistic</label>
+        </li>
+      </ul>
+    </fieldset>
+
+    <fieldset class="label-input-parent md" id="activities-group">
+      <legend class="label-input-label" id="activities-label"><span>Daily activities:</span></legend>
+      <ul class="input-list label-input-input" id="activities-list">
+        <li>
+          <input type="checkbox" name="activities" value="workout" id="workout">
+          <label for="workout">Workout</label>
+        </li>
+        <li>
+          <input type="checkbox" name="activities" value="meditate" id="meditate">
+          <label for="meditate">Meditate</label>
+        </li>
+        <li>
+          <input type="checkbox" name="activities" value="talk" id="talk">
+          <label for="talk">Talk to family/friends</label>
+        </li>
+        <li>
+          <input type="checkbox" name="activities" value="music" id="music">
+          <label for="music">Listen to/play music</label>
+        </li>
+        <li>
+          <input type="checkbox" name="activities" value="book" id="book">
+          <label for="book">Read/write a book</label>
+        </li>
+        <li>
+          <input type="checkbox" name="activities" value="dog" id="dog">
+          <label for="dog">Walk my dog</label>
+        </li>
+        <li>
+          <input type="checkbox" name="activities" value="code" id="code">
+          <label for="code">Code</label>
+        </li>
+      </ul>
+    </fieldset>
+  </section>
+
+  <section class="form-section" id="rate">
+    <h2>Tell us about your day:</h2>
+    <hr>
+    <fieldset class="label-input-parent lg" id="blueday-group">
+      <legend class="label-input-label" id="blueday-label"><span>How blue was your day?</span></legend>
+      <ul class="input-list label-input-input" id="blueday-list">
+        <li class="blueday-list-item">
+          <input type="radio" name="blueday" value="lightblue" id="lightblue">
+          <label for="lightblue">Light</label>
+        </li>
+        <li class="blueday-list-item">
+          <input type="radio" name="blueday" value="deepskyblue" id="deepskyblue">
+          <label for="deepskyblue">Deep sky</label>
+        </li>
+        <li class="blueday-list-item">
+          <input type="radio" name="blueday" value="cornflowerblue" id="cornflowerblue">
+          <label for="cornflowerblue">Cornflower</label>
+        </li>
+        <li class="blueday-list-item">
+          <input type="radio" name="blueday" value="royalblue" id="royalblue">
+          <label for="royalblue">Royal</label>
+        </li>
+        <li class="blueday-list-item">
+          <input type="radio" name="blueday" value="mediumblue" id="mediumblue">
+          <label for="mediumblue">Medium</label>
+        </li>
+        <li class="blueday-list-item">
+          <input type="radio" name="blueday" value="darkblue" id="darkblue">
+          <label for="darkblue">Dark</label>
+        </li>
+      </ul>
+    </fieldset>
+
+    <fieldset class="label-input-parent xl" id="influence-group">
+      <legend class="label-input-label" id="influence-label"><span>Who influenced your day?</span></legend>
+      <ul class="input-list label-input-input" id="influence-list">
+        <li>
+          <input type="checkbox" name="influence" value="parent" id="parent">
+          <label for="parent">Parent</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="sibling" id="sibling">
+          <label for="sibling">Sibling</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="sig-oth" id="sig-oth">
+          <label for="sig-oth">Significant other</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="child" id="child">
+          <label for="child">Child</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="friend" id="friend">
+          <label for="friend">Friend</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="boss" id="boss">
+          <label for="boss">Boss</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="colleague" id="colleague">
+          <label for="colleague">Colleague</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="worker" id="worker">
+          <label for="worker">Worker</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="vendor" id="vendor">
+          <label for="vendor">Vendor</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="competitor" id="competitor">
+          <label for="competitor">Competitor</label>
+        </li>
+        <li>
+          <input type="checkbox" name="influence" value="client" id="client">
+          <label for="client">Client</label>
+        </li>
+      </ul>
+    </fieldset>
+
+    <div class="label-input-parent sm" id="past-group">
+      <label for="past-dropdown" class="label-input-label" id="past-label"><span>How does today compare to past days?</span></label>
+      <select class="input-block label-input-input" id="past-dropdown">
+        <option disabled selected value="default">Please select</option>
+        <option value="outstanding">Outstanding - Better than my good days</option>
+        <option value="good">Good - Another above-average day</option>
+        <option value="average">Average - Just another average day</option>
+        <option value="fair">Fair - Another below-average day</option>
+        <option value="poor">Poor - Worse than my bad days</option>
+      </select>
+    </div>
+
+    <fieldset class="label-input-parent sm" id="future-group">
+      <legend class="label-input-label" id="future-label"><span>How do you expect future days to be?</span></legend>
+      <ul class="input-list label-input-input" id="future-list">
+        <li>
+          <input type="radio" name="future" value="better" id="better">
+          <label for="better">Better than today</label>
+        </li>
+        <li>
+          <input type="radio" name="future" value="same" id="same">
+          <label for="same">Same as today</label>
+        </li>
+        <li>
+          <input type="radio" name="future" value="better" id="worse">
+          <label for="worse">Worse than today</label>
+        </li>
+      </ul>
+    </fieldset>
+  </section>
+
+  <section class="form-section" id="comment-submit">
+    <h2>Comment and submit:</h2>
+    <hr>
+    <div id="comments-group" class="label-input-parent lg">
+      <label for="comments" class="label-input-label" id="comments-label"><span>Share more details about your day:</span></label>
+      <textarea class="label-input-input" id="comments" placeholder="Your comments" cols="10" rows="10"></textarea>
+    </div>
+    <div class="label-input-parent xs" id="submit-group">
+      <p class="label-input-label" id="submit-label"><span>Submit your filled form:</span></p>
+      <input type="submit" class="input-block-small label-input-input" id="submit" value="Submit">
+    </div>
+  </section>
+</form>
+<!-- partial -->
+  
+</body>
+</html>

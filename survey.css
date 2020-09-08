@@ -1,0 +1,157 @@
+body {
+  background: repeating-linear-gradient(
+    45deg,
+    #7794ea 0%,
+    #add8e6 20%,
+    #7794ea 40%
+    );
+}
+
+header {
+  text-align: center;
+  font-family: 'Kavoon', cursive;
+}
+
+h2 {
+  font-family: 'Concert One', cursive;
+}
+
+.survey-form {
+  background-color: #eee;
+  border: none;
+  box-shadow: 0 0 8px #ccc;
+  border-radius: 20px;
+  margin: 10px auto;
+  padding: 5px;
+  min-height: 240px;
+  width: 90%;
+  max-width: 800px;
+  box-sizing: border-box;
+}
+
+.form-section {
+  background-color: #eee;
+  border: none;
+  box-shadow: 0 0 8px #ccc;
+  border-radius: 20px;
+  margin: 8px;
+  padding: 8px;
+}
+
+.label-input-parent {
+  position: relative;
+  border: none;
+  padding: 0;
+  margin: 1em 0;
+  font-family: 'Eczar', serif;
+}
+
+.label-input-label {
+  margin: 0;
+}
+
+input {
+  margin: 0; /*Lines up all the rows by removing radio and checkbox margin*/
+}
+
+textarea  {
+  display: block;
+  height: 180px;
+  min-height: 180px;
+  max-height: 180px;
+  width: 98%;
+  min-width: 98%;
+  max-width: 98%;
+}
+
+.input-block {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+}
+
+.input-block-small {
+  display: block;
+  width: 100%;
+  max-width: 120px;
+}
+
+.input-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.asterisk-required {
+  margin: 0;
+  padding: 0;
+  text-align: right;
+}
+
+.blueday-list-item {
+  max-width: 150px;
+  height: 30px;
+  position: relative;
+}
+
+.blueday-list-item label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translate(0, -50%);
+}
+
+.blueday-list-item input {
+  display: none;
+}
+
+.blueday-list-item input:checked+label {
+  font-weight: 900;
+  text-decoration: underline;
+}
+
+  /*BLUE COLORS*/
+.blueday-list-item:nth-child(1) {
+  background-color: lightblue;
+  color: #111;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px
+}
+.blueday-list-item:nth-child(2) {background-color: deepskyblue; color: #111}
+.blueday-list-item:nth-child(3) {background-color: cornflowerblue; color: #111}
+.blueday-list-item:nth-child(4) {background-color: royalblue; color: #eee}
+.blueday-list-item:nth-child(5) {background-color: mediumblue; color: #eee}
+.blueday-list-item:nth-child(6) {
+  background-color: darkblue;
+  color: #eee;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px
+}
+
+/*MEDIUM SCREEN SIDE-BY-SIDE LABEL-INPUTS*/
+@media only screen and (min-width:480px) {
+.label-input-label, .label-input-input {
+    position: absolute;
+    left: 50%;
+    width: 44%;
+  }
+
+  .label-input-label {
+    transform: translate(-102%);
+    text-align: right;
+  }
+
+  textarea {
+    width: 44%;
+    min-width: 44%;
+    max-width: 44%;
+  }
+
+
+  /*HEIGHT OF SIDE-BY-SIDE INPUT-LABEL GROUPS*/
+  .xs {min-height: 25px;}
+  .sm {min-height: 75px;}
+  .md {min-height: 170px;}
+  .lg {min-height: 220px;}
+  .xl {min-height: 310px;}
+}
