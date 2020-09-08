@@ -1,0 +1,427 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  max-width: 1800px;
+  margin: auto;
+}
+
+header, footer, .section-header {
+  max-width: 1800px;
+  margin: auto;
+  background-color: #830007;
+  color: #c3e18f;
+}
+
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 92px; /* Leaves room for wrapped navbar while allowing it to expand for tiny screens */
+  display: flex; /* Allows wrap for smaller screens and justify for larger scerees */
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center; /* Required for IE to center nav links on larger screens */
+  border-bottom: 5px solid #053655;
+  overflow: hidden;
+  z-index: 1; /* Avoids getting behind about text and feateures */
+}
+
+.brand-logo {
+  width: 50%;
+  height: 50%;
+  margin: auto;
+}
+
+.brand-logo img {
+  padding: 4px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.nav-bar {
+  width: 300px;/* Makes it wide enough to force navigation to apply space between links*/
+  max-width: 90%;
+  margin: auto;
+}
+
+.navigation {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.nav-link {
+  color: inherit;
+  font-size: 1.2em;
+  font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+  text-decoration: none;
+  border-bottom: 3px solid #053655;
+  display: inline-block; /*Ensures link borders stay in navigation padding by avoiding margin collapse */
+}
+
+.nav-link:hover {
+  font-weight: bold;
+  animation-name: nav-link-expand;
+  animation-duration: 1s;
+}
+
+@keyframes nav-link-expand {
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+#about {
+  background: #adc332 url("http://preview.ibb.co/dbryXn/colored.png") center /cover no-repeat fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center; /* Required for IE to center about text */
+}
+
+section:before {
+  /*Compensate for fixed header and appropriate navigation*/
+  content: '';
+  display: block;
+  height: 92px;
+}
+
+#tutorials:before, #pricing:before {
+  margin-top: -92px; /*removes the actual block*/
+}
+
+.about-text, .feature {
+  background-color: #8ca115;
+  color: #053655;
+}
+
+.about-text {
+  max-width: 95%;
+  padding: 0 10px 10px;
+  margin: 10px auto;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+h1, h2, h3, p, figure {
+  margin: 0;
+  padding: 0;  
+}
+
+h1 {
+  font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+  font-size: 12vw;
+  border-bottom: 3px solid #c6323a;
+  word-wrap: break-word;
+}
+
+.about-text h2 {
+  color: black;
+}
+
+.btn1 {
+  display: inline-block;
+  background-color: #c3e18f;
+  color: #830007;
+  text-decoration: none;
+  margin: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.about-features {
+  background-color: rgba(5, 54, 85, 0.25);
+  max-width: 100%;
+}
+
+.feature, .tutorial {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1; /* For larger screens where parent is flex */
+  opacity: 1;
+  border: 2px solid #c6323a;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 10px;
+  max-width: 100%;
+}
+
+.feature-text, .tutorial-text {
+  width: 100%;
+}
+
+.feature:before {
+  content: "";
+  background-image: url("http://preview.ibb.co/dbryXn/colored.png");
+  background-position: top;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 25vw;
+  max-height: 80px;
+  width: 100%;
+}
+
+.section-header {
+  min-height: 92px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#tutorials .section-content {
+  background-color: #14486a;
+  color: #053655;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tutorial {
+  background-color: #8ca115;
+}
+
+.tutorial, .tutorial-text {
+  flex-basis: auto; /* Required for IE */
+}
+
+h3 {
+  font-size: 6vw;
+  font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+}
+
+p {
+  width: 90%;
+  margin: auto;
+  font-size: 5vw;
+  line-height: 1.2em;
+  color: black;
+}
+
+iframe {
+  border: 0;
+  width: 80vw;
+  height: 45vw;
+  max-width: 560px;
+  max-height: 315px;
+}
+
+.pricing-table {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background: #8ca115;
+}
+
+.pricing-box {
+  flex-basis: 25%;
+  min-width: 200px;
+}
+
+.pricing-table div ul {
+  list-style-type: none;
+  margin: 45px 0;
+}
+
+.pricing-box-list-item {
+  background-color: #14486a;
+  color: #c3e18f;
+  font-family: sans-serif;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: space-around;
+  border-bottom: 1px solid #c6323a;
+}
+
+.pricing-box-list-header {
+  background-color: #053655;
+  height: 100px;
+  font-weight: bold;
+  font-size: 1.3em;
+  font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+  border-top-right-radius: 25px;
+  border-top-left-radius: 25px;
+}
+
+.pricing-box-list-item:nth-last-child(1) {
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
+  border-bottom: none;
+}
+
+footer {
+  width: 100%;
+  border-top: 3px solid #c6323a;
+}
+
+form {
+  padding: 10px;
+}
+
+label, input {
+  margin: 5px;
+}
+
+label{
+  display: inline;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 0 5px;
+}
+
+input[type=email] {
+  width: 90%;
+  max-width: 300px;
+  height: 30px;
+  background-color: #c3e18f;
+  border: none;
+  text-align: left;
+}
+
+footer p {
+  color: #c3e18f;
+}
+
+@media only screen and (min-width: 400px) {
+
+/*Set maximum font-size to elements with vw defaults.*/
+  h1 {
+    font-size: 48px;
+  }
+
+  h3 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (min-width: 781px) {
+
+  .main-header, .section-header, #about:before {
+    height: 10vh;
+  }
+
+  #tutorials:before, #pricing:before {
+    height: 10vh;
+    margin-top: -10vh;
+  }
+
+  .main-header {
+    flex-direction: row;
+  }
+
+  .brand-logo {
+    height: 85%;
+    position: relative;
+    animation-name: branding-setin;
+    animation-duration: 2s;
+    margin-left: 20px;
+  }
+
+  .brand-logo img {
+    display: block;
+  }
+
+  .nav-bar {
+    position: relative;
+    flex-basis: 300px;
+    margin-right: 20px;
+    animation-name: navigation-setin;
+    animation-duration: 2s;
+  }
+
+  #about {
+    height: 100vh; /* Force about features to bottom */
+  }
+
+  .about-features {
+    display: flex;
+    width: 100%; /*Force 100% for IE*/
+  }
+
+  .about-text, .feature {
+    position: relative;
+    animation-name: showcase-setin;
+    animation-duration: 2s;
+  }
+
+  .about-text {
+    animation-timing-function: ease-in;
+  }
+
+  .tutorial {
+    flex-direction: row;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  #tutorials .section-content {
+    background-color: #fff;
+  }
+
+  #tutorials .section-content>div:nth-of-type(even) {
+    background-color: #adc332;
+  }
+
+  #tutorials .section-content>div:nth-of-type(even) figure {
+    order: -1;
+  }
+
+  .tutorial-text {
+    width: calc(100% - 560px);
+  }
+
+  .tutorial-video {
+    width: 560px;
+    height: 315px;
+  }
+
+}
+
+/* Keyframes need be declared outside of media queries for IE */
+@keyframes branding-setin {
+  0% {
+    left: 100px;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+@keyframes navigation-setin {
+  0% {
+    left: -100px;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+@keyframes showcase-setin {
+  0% {
+    top: -100px;
+  }
+  100% {
+    top: 0;
+  }
+}
