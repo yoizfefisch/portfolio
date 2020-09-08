@@ -1,0 +1,168 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body, ul, ol, h1 {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+}
+
+.navbar {
+    display: flex; /*Enables scroll for navigation without header*/
+    flex-direction: column;
+    justify-content: flex-start;
+    font-family: 'Space Mono', monospace;
+    background-color: #f1C911;
+    margin: 10px 10px 0; /*Bottom margin is top margin of main-doc*/
+    height: 200px;
+    border: 3px groove #f1C911;
+}
+
+.navigation {
+    list-style-type: none;
+    overflow-y: auto;
+    flex: 1 1 auto;
+}
+
+.main-header {
+    flex: 0 0 auto;
+}
+
+.home-link, .nav-link {
+    display: block;
+    height: 100%;
+    padding-left: 10px;
+    text-decoration: none;
+    color: black;
+    border-bottom: 3px double black;
+    min-height:  40px;
+}
+
+.home-link {
+    font-size: 24px;
+}
+
+.nav-link:hover {
+    background-color: black;
+    color: #f1C911;
+    border-bottom: 1px ridge #f1C911;
+}
+
+.main-section {
+    margin: 10px;
+    padding: 10px;
+    border: 3px groove #f1C911;
+    font-family: 'Lato', sans-serif;
+    background-color: white;
+}
+
+.main-doc p, .main-doc li, h2, h3, h4, h5, h6 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+pre {
+    margin: 0 0 0 30px;
+    padding: 0 30px;
+    background-color: #f9e9a3;
+    border-radius: 10px;
+    max-width: 100%;
+    overflow: auto;
+}
+
+p code, li code {
+    padding: 0 2px;
+    background-color: #f9e9a3;
+    border-radius: 4px;
+}
+
+.note-p {
+    padding: 6px;
+    margin: 10px 30px;
+    max-width: 400px;
+    font-family: 'Space Mono', Monospace;
+    font-size: .9em;
+    word-spacing: -0.2em;
+    background-color: #f9e9a3;
+    border-left: 10px solid #f1C911;
+    border-radius: 6px;
+}
+
+.note {
+    font-weight: 900;
+    font-size: 1.1em;
+}
+
+.main-doc ul, .main-doc ol {
+    list-style-position: outside;
+    margin-left: 30px;
+}
+
+.table-wrapper {
+    margin-left: 30px;
+    overflow: auto;
+    overflow-y: initial;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 5px;   
+    border: 2px solid #f1c812;
+}
+
+thead th {
+    border-bottom: 4px groove #f1c812;
+}
+
+@media only screen and (min-width: 770px) and (min-height: 500px) {
+    .wrapper {
+        flex-direction: row;
+        background-color: black;
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: calc(100% - 250px);
+        height: auto; /*Override mobile view 200px*/
+        margin: 10px 0 10px 10px; /*Right margin is left margin of main-doc*/
+    }
+
+    .navigation {
+        overflow: hidden; /*IE required to override mobile view*/
+    }
+
+    /*Padding for main-doc to compensate for fixed navbar*/
+    .wrapper:before {
+        content: "";
+        width: 250px;
+    }
+
+    .main-doc {
+        width: calc(100% - 250px);
+        flex-shrink: 0;
+        min-width: 500px;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: calc(100% - 250px);
+        margin: 10px;
+        padding-left: 10px;
+        margin-right: 0;
+    }
+}

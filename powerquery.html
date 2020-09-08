@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en" class="lang="en"">
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - FCC Technical Documentation: Power Query (M)</title>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Documentation | PowerQuery (M)</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono%7cLato" rel="stylesheet">
+    <script src="https://gitcdn.link/repo/freeCodeCamp/testable-projects-fcc/master/build/bundle.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="wrapper">
+  <nav id="navbar" class="navbar">
+    <header class="main-header">
+      <h1><a href="#" class="home-link">Power Query M Documentation</a></h1>
+    </header>
+    <ul class="navigation">
+      <li class="nav-item"><a href="#Quick_tour" class="nav-link">Quick tour</a></li>
+      <li class="nav-item"><a href="#Expressions_and_values" class="nav-link">Expressions and values</a></li>
+      <li class="nav-item"><a href="#Comments" class="nav-link">Comments</a></li>
+      <li class="nav-item"><a href="#Evaluation_model" class="nav-link">Evaluation model</a></li>
+      <li class="nav-item"><a href="#Operators" class="nav-link">Operators</a></li>
+      <li class="nav-item"><a href="#Type_conversion" class="nav-link">Type conversion</a></li>
+      <li class="nav-item"><a href="#Metadata" class="nav-link">Metadata</a></li>
+      <li class="nav-item"><a href="#Errors" class="nav-link">Errors</a></li>
+    </ul>
+  </nav>
+  <main id="main-doc" class="main-doc">
+    <section class="main-section" id="Quick_tour">
+      <header>
+        <h2>Quick tour</h2>
+      </header>
+      <p>This quick tour applies to creating Power Query M formula language queries in Power BI Desktop, Power Query in Excel, and Get Data in Excel 2016.</p>
+      <p class="note-p"><span class="note">Note: </span>M is a case-sensitive language.</p>
+      <h3>Create a query with Query Editor</h3>
+      <p>To create an advanced query, you use the <strong>Query Editor</strong>. A mashup query is composed of <strong>variables</strong>, <strong>expressions</strong>, and <strong>values</strong> encapsulated by a <strong>let</strong> expression. A variable can contain spaces by using the # identifier with the name in quotes as in <code>#"Variable name"</code>.</p>
+      <p>A <strong>let</strong> expression follows this structure:</p>
+      <pre>
+            <code>
+let
+  Variablename = expression,
+  #"Variable name" = expression2
+in 
+  Variablename
+            </code>
+          </pre>
+      <p>To create an M query in the <strong>Query Editor</strong>, you follow this basic process:</p>
+      <ul>
+        <li>Create a series of query formula steps that start with the <strong>let</strong> statement.</li>
+        <li>Each step is defined by a step <strong>variable</strong> name which can include spaces by using the # character as <code>#"Step Name"</code>.</li>
+        <li>A formula step can be a custom formula. Please note that the Power Query Formula Language is case sensitive.</li>
+        <li>Each query formula step builds upon a previous step by referring to a step by its variable name.</li>
+        <li>Output a query formula step using the <strong>in</strong> statement. Generally, the last query step is used as the in final data set output.</li>
+      </ul>
+      <p>To learn more about <strong>expressions</strong> and <strong>values</strong>, see <a href="#Expressions_and_values">Expressions and values</a>.</p>
+      <h3>Simple Power Query M formula example</h3>
+      <p>Let's assume you have a table that looks like this:</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>OrderID</th>
+              <th>CustomerID</th>
+              <th>Item</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>1</td>
+              <td>fishing rod</td>
+              <td>100</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>1</td>
+              <td>1 lb. worms</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>2</td>
+              <td>fishing net</td>
+              <td>25</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>And, you want to capitalize each word in the Item column to produce the following table:</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">OrderID</th>
+              <th scope="col">CustomerID</th>
+              <th scope="col">Item</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>1</td>
+              <td>Fishing Rod</td>
+              <td>100</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>1</td>
+              <td>1 Lb. Worms</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>2</td>
+              <td>Fishing Net</td>
+              <td>25</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Here's the code you can paste into the <strong>Query Editor</strong>'s <strong>Advanced Editor</strong>:</p>
+      <pre>
+            <code>
+let
+  Orders = Table.FromRecords({
+    [OrderID = 1, CustomerID = 1, Item = "fishing rod", Price = 100.0],
+    [OrderID = 2, CustomerID = 1, Item = "1 lb. worms", Price = 5.0],
+    [OrderID = 3, CustomerID = 2, Item = "fishing net", Price = 25.0]
+  }),
+  #"Capitalized Each Word" = Table.TransformColumns(Orders, {"Item", Text.Proper})
+in
+  #"Capitalized Each Word"
+            </code>
+          </pre>
+      <p>Let's review this simple examle and see how it followed the basic process outlined above:</p>
+      <ul>
+        <li>You started the <strong>query</strong> using the <code>let</code> statement.</li>
+        <li>You defined 2 steps using the <strong>variable</strong> names <code>Orders</code> and <code>#"Capitalized Each Word"</code>.</li>
+        <li>In the first step you used the <code>Table.FromRecords</code> function to create a <strong>table</strong> from a <strong>list</strong> of supplied <strong>records</strong> (learn more about these value types in <a href="#Structured_data_values">Structured data values</a>).</li>
+        <li>In the second step you built upon the previous step by passing its variable name as the first parameter to the <code>Table.TransformColumns</code> function.</li>
+        <li>You then output the result of the last step to the final data set by placing its name after the <code>in</code> statement.</li>
+      </ul>
+      <!--p>Let’s review each part of this formula:</p>
+<ol>
+<li><strong>let</strong> - Wrap all <strong>variables</strong> (steps) in a <strong>let expresion</strong> to make a single <strong>query</strong>.</li>
+<li><Strong>Orders</Strong> – Name your first <strong>variable</strong> which creates the first step in the <strong>query</strong>. The <strong>value</strong> assigned to <strong>Orders</strong> is the result of an <strong>expression</strong> which in this case returns a <strong>table</strong> with data.</li>
+<li><strong>#"Capitalized Each Word"</strong> – The second <strong>variable</strong> name includes spaces and thus is surronded by quotation marks and prefixed by the # sign. This step results in each word in the Item field being capitalized. To apply column transformations, you use <strong>Table.TransformColumns()</strong>. This <strong>function</strong> takes the following arguments:</li>
+<ol>
+<li>A table or the name of a table, in this case it is the name of the previous step which resulted in a table.</li>
+<li>A list consisting  of the column name that needs transformation along with the transformation type that should be aplied.In this case it's the column name "item" with the transformation type <strong>Text.Proper</strong>.</li>
+<li><a href="https://msdn.microsoft.com/en-us/library/mt260818.aspx" target="_blank">2 additional optional arguments</a> not discussed here for brevity.</li>
+</ol>
+<li><strong>in</strong> - Define this formula's output, in this case the last step using its variable name.</li>
+</ol>
+<p>Let’s review each formula step.</p>
+<ol>
+<li><strong>Orders</strong> – Create a table with data for Orders.</li>
+<li><strong>#"Capitalized Each Word"</strong> – To capitalize each word, you use Table.TransformColumns().</li>
+<li><strong>in #"Capitalized Each Word"</strong> – Output the table with each word capitalized.</li>
+</ol-->
+    </section>
+    <section class="main-section" id="Expressions_and_values">
+      <header>
+        <h2>Expressions and values</h2>
+      </header>
+      <p>A Power Query M formula language query is composed of formula <strong>expression</strong> steps that create a mashup query. A formula expression can be evaluated (computed), yielding a <strong>value</strong>.</p>
+      <h3 id="Let_expression">Let expression</h3>
+      <p>The <strong>let</strong> expression encapsulates a set of values to be computed, assigned names, and then used in a subsequent expression that follows the <strong>in</strong> statement. For example, a let expression could contain a <code>Source</code> variable that equals the value of the <code>Text.Proper()</code> formula expression and yields a text value in proper case. This value was assigned the name <code>Source</code> which is then used following the <strong>in</strong> statement as the final result of the query.</p>
+      <pre>
+            <code>
+let
+  Source = Text.Proper("hello world")
+in
+  Source
+            </code>
+          </pre>
+      <p>In the example above, <code>Text.Proper("hello world")</code> is evaluated to "Hello World".</p>
+      <p>The next sections describe value types in the language.</p>
+      <h3 id="Primitive_value">Primitive value</h3>
+      <p>A <strong>primitive</strong> value is single-part value, such as a number, logical, text, or null. A null value can be used to indicate the absence of any data.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Type</th>
+              <th scope="col">Example value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Binary</td>
+              <td>00 00 00 02    // number of points (2)</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>5/23/2015</td>
+            </tr>
+            <tr>
+              <td>DateTime</td>
+              <td>5/23/2015 12:00:00 AM</td>
+            </tr>
+            <tr>
+              <td>DateTimeZone</td>
+              <td>5/23/2015 12:00:00 AM -08:00</td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td>15:35:00</td>
+            </tr>
+            <tr>
+              <td>Logical</td>
+              <td>true and false</td>
+            </tr>
+            <tr>
+              <td>Null</td>
+              <td>null</td>
+            </tr>
+            <tr>
+              <td>Number</td>
+              <td>0, 1, -1, 1.5, and 2.3e-5</td>
+            </tr>
+            <tr>
+              <td>Text</td>
+              <td>"abc"</td>
+            </tr>
+            <tr>
+              <td>Time</td>
+              <td>12:34:12 PM</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 id="Function_value">Function value</h3>
+      <p>A <strong>Function</strong> is a value which, when invoked with arguments, produces a new value. Functions are written by listing the function’s <strong>parameters</strong> in parentheses, followed by the goes-to symbol =>, followed by the expression defining the function. For example, to create a function called “MyFunction” that has two parameters and performs a calculation on parameter1 and parameter2:</p>
+      <pre>
+            <code>
+let
+  MyFunction = (parameter1, parameter2) => (parameter1 + parameter2) / 2
+in
+  MyFunction
+            </code>
+          </pre>
+      <p>Calling the <code>MyFunction()</code> returns the result:</p>
+      <pre>
+            <code>
+let
+  Source = MyFunction(2, 4)
+in
+  Source
+            </code>
+          </pre>
+      <p>This code produces the value of 3.</p>
+      <h3 id="Structured_data_values">Structured data values</h3>
+      <p>The M language supports the following structured data values:</p>
+      <ul>
+        <li><a href="#List">List</a></li>
+        <li><a href="#Record">Record</a></li>
+        <li><a href="#Table">Table</a></li>
+        <li><a href="#Additional_structured_data_examples">Additional structured data examples</a></li>
+      </ul>
+      <p class="note-p"><span class="note">Note: </span>Structured data can contain any M value. To see a couple of examples, see <a href="#Additional_structured_data_examples">Additional structured data examples</a>.</p>
+      <h4 id="List">List</h4>
+      <p>A List is a zero-based ordered sequence of values enclosed in curly brace characters { }. The curly brace characters { } are also used to retrieve an item from a List by index position.</p>
+      <p class="note-p"><span class="note">Note: </span>Power Query M supports an infinite list size, but if a list is written as a literal, the list has a fixed length. For example, {1, 2, 3} has a fixed length of 3.</p>
+      <p>The following are some List examples.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Value</th>
+              <th scope="col">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{123, true, "A"}</td>
+              <td>List containing a number, a logical, and text.</td>
+            </tr>
+            <tr>
+              <td>{1, 2, 3}</td>
+              <td>List of numbers</td>
+            </tr>
+            <tr>
+              <td>{<br>&emsp;{1, 2, 3},<br>&emsp;{4, 5, 6}<br>}</td>
+              <td>List of List of numbers</td>
+            </tr>
+            <tr>
+              <td>{<br>&emsp;[CustomerID = 1, Name = "Bob", Phone = "123-4567"],<br>&emsp;[CustomerID = 2, Name = "Jim", Phone = "987-6543"]<br>}</td>
+              <td>List of Records</td>
+            </tr>
+            <tr>
+              <td>{123, true, "A"}{0}</td>
+              <td>Get the value of the first item in a List. This expression returns the value 123.</td>
+            </tr>
+            <tr>
+              <td>{<br>&emsp;{1, 2, 3},<br>&emsp;{4, 5, 6}<br>}{0}{1}</td>
+              <td>Get the value of the second item from the first List element. This expression returns the value 2.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h4 id="Record">Record</h4>
+      <p>A <strong>Record</strong> is a set of fields. A <strong>field</strong> is a name/value pair where the name is a text value that is unique within the field’s record. The syntax for record values allows the names to be written without quotes, a form also referred to as <strong>identifiers</strong>. An identifier can take the following two forms:</p>
+      <ol>
+        <li>identifier_name such as OrderID.</li>
+        <li>#"identifier name" such as #"Today's data is: ".</li>
+      </ol>
+      <p>Square brace characters [ ] denote the beginning and end of a record expression, and are used to get a field value from a record.</p>
+      <h5>The following example shows a record and how to get the Item field value.</h5>
+      <p>The example record contains fields named "OrderID", "CustomerID", "Item", and "Price" with values 1, 1, "Fishing rod", and 100.00:</p>
+      <pre>
+              <code>
+let
+  Source = [
+    OrderID = 1,
+    CustomerID = 1,
+    Item = "Fishing rod",
+    Price = 100.00
+  ]
+in
+  Source
+              </code>
+            </pre>
+      <p>To get the value of an Item, you use square brackets as Source[Item]:</p>
+      <pre>
+            <code>
+let
+  Source = [
+    OrderID = 1,
+    CustomerID = 1,
+    Item = "Fishing rod",
+    Price = 100.00
+  ]
+in
+  Source[Item] //equals "Fishing rod"
+            </code>
+          </pre>
+      <h4 id="Table">Table</h4>
+      <p>A <strong>Table</strong> is a set of values organized into named columns and rows. The column type can be implicit or explicit. You can use the <code>#table</code> function to create a list of column names and a list of rows. A <strong>Table</strong> of values is a <strong>List</strong> in a <strong>List</strong>. The curly brace characters { } are also used to retrieve a row from a <strong>Table</strong> by index position (see Example 3 – Get a row from a table by index position).</p>
+      <h5>Example 1 - Create a table with implicit column types</h5>
+      <pre>
+            <code>
+let
+  Source = #table(
+    {"OrderID", "CustomerID", "Item", "Price"},
+    {
+      {1, 1, "Fishing rod", 100.00},
+      {2, 1, "1 lb. worms", 5.00}
+    }
+  )
+in
+  Source
+            </code>
+          </pre>
+      <h5>Example 2 – Create a table with explicit column types</h5>
+      <pre>
+            <code>
+let
+  Source = #table(
+    type table [OrderID = number, CustomerID = number, Item = text, Price = number],
+    {
+      {1, 1, "Fishing rod", 100.00},
+      {2, 1, "1 lb. worms", 5.00}
+    }
+  )
+in
+  Source
+            </code>
+          </pre>
+      <p>Both of the examples above creates a table with the following shape:</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">OrderID</th>
+              <th scope="col">CustomerID</th>
+              <th scope="col">Item</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>1</td>
+              <td>Fishing rod</td>
+              <td>100.00</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>1</td>
+              <td>1 lb. worms</td>
+              <td>5.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h5>Example 3 – Get a row from a table by index position</h5>
+      <pre>
+            <code>
+let
+  Source = #table(
+    type table [OrderID = number, CustomerID = number, Item = text, Price = number], 
+    {
+      {1, 1, "Fishing rod", 100.00},
+      {2, 1, "1 lb. worms", 5.00}
+    }
+  )
+in
+  Source{1}
+            </code>
+          </pre>
+      <p>This expression returns the following record:</p>
+      <div class="table-wrapper">
+        <table>
+          <tbody>
+            <tr>
+              <td><strong>OrderID</strong></td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td><strong>CustomerID</strong></td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td><strong>Item</strong></td>
+              <td>1 lb. worms</td>
+            </tr>
+            <tr>
+              <td><strong>Price</strong></td>
+              <td>5</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h4 id="Additional_structured_data_examples">Additional structured data examples</h4>
+      <p>Structured data can contain any M value. Here are some examples:</p>
+      <h5>Example 1 - List with <a href="#Primitive_value">Primitive values</a>, <a href="Function_value">Function</a>, and <a href="#Record">Record</a></h5>
+      <pre>
+            <code>
+let
+  Source = {
+    1,
+    "Bob",
+    DateTime.ToText(DateTime.LocalNow(), "yyyy-MM-dd"),
+    [OrderID = 1, CustomerID = 1, Item = "Fishing rod", Price = 100.0]
+  }
+in
+  Source            
+            </code>
+          </pre>
+      <p>Evaluating this expression can be visualized as:</p>
+      <div class="table-wrapper">
+        <table>
+          <caption>A List containing a Record</caption>
+          <tbody>
+            <tr>
+              <td colspan="2">1</td>
+            </tr>
+            <tr>
+              <td colspan="2">"Bob"</td>
+            </tr>
+            <tr>
+              <td class="current-date" colspan="2">Today's date in yyyy-MM-dd format</td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <td><strong>OrderID</strong></td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td><strong>CustomerID</strong></td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td><strong>Item</strong></td>
+              <td>1 lb. worms</td>
+            </tr>
+            <tr>
+              <td><strong>Price</strong></td>
+              <td>5</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Example 2 - Record containing Primitive values and nested Records</p>
+      <pre>
+            <code>
+let
+  Source =
+    [CustomerID = 1, Name = "Bob", Phone = "123-4567", Orders =
+      {
+        [OrderID = 1, CustomerID = 1, Item = "Fishing rod", Price = 100.0],
+        [OrderID = 2, CustomerID = 1, Item = "1 lb. worms", Price = 5.0]
+      }
+    ]
+in
+  Source
+            </code>
+          </pre>
+      <p>Evaluating this expression can be visualized as:</p>
+      <div class="table-wrapper">
+        <table>
+          <caption>A Record containing a List of Records</caption>
+          <tbody>
+            <tr>
+              <td><strong>CustomerID</strong></td>
+              <td colspan="2">1</td>
+            </tr>
+            <tr>
+              <td><strong>Name</strong></td>
+              <td colspan="2">"Bob"</td>
+            </tr>
+            <tr>
+              <td><strong>Phone</strong></td>
+              <td colspan="2">123-4567</td>
+            </tr>
+            <tr>
+              <td rowspan="8"><strong>Orders</strong></td>
+              <td><strong>OrderID</strong></td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td><strong>CustomerID</strong></td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td><strong>Item</strong></td>
+              <td>"Fishing rod"</td>
+            </tr>
+            <tr>
+              <td><strong>Price</strong></td>
+              <td>100.0</td>
+            </tr>
+            <tr>
+              <td><strong>OrderID</strong></td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td><strong>CustomerID</strong></td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td><strong>Item</strong></td>
+              <td>"1 lb. worms"</td>
+            </tr>
+            <tr>
+              <td><strong>Price</strong></td>
+              <td>5.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note-p"><span class="note">Note: </span>Although many values can be written literally as an expression, a value is not an expression. For example, the expression 1 evaluates to the value 1; the expression 1+1 evaluates to the value 2. This distinction is subtle, but important. Expressions are recipes for evaluation; values are the results of evaluation.</p>
+      <h3>If expression</h3>
+      <p>The <strong>if</strong> expression selects between two expressions based on a logical condition. For example:</p>
+      <pre>
+          <code>
+if 2 > 1 then  
+  2 + 2   
+else   
+  1 + 1 
+          </code>
+        </pre>
+      <p>The first expression (2 + 2) is selected if the logical expression (2 > 1) is true, and the second expression (1 + 1) is selected if it is false. The selected expression (in this case 2 + 2) is evaluated and becomes the result of the <strong>if</strong> expression (4).</p>
+    </section>
+    <section class="main-section" id="Comments">
+      <header>
+        <h2>Comments</h2>
+      </header>
+      <p>You can add comments to your code with single-line comments (//) or multi-line comments that begin with /* and end with */.</p>
+      <p>Example - Single-line comment</p>
+      <pre>
+            <code>
+let
+  //Convert to proper case
+  Source = Text.Proper("hello world")
+in
+  Source
+            </code>
+          </pre>
+      <p>Example - Multi-line comment</p>
+      <pre>
+            <code>
+/* Capitalize each word in the Item column in the Orders table. Text.Proper
+is evaluated for each Item in each table row. */
+let
+  Orders = Table.FromRecords({
+    [OrderID = 1, CustomerID = 1, Item = "fishing rod", Price = 100.0],
+    [OrderID = 2, CustomerID = 1, Item = "1 lb. worms", Price = 5.0],
+    [OrderID = 3, CustomerID = 2, Item = "fishing net", Price = 25.0]
+  }),
+  #"Capitalized Each Word" = Table.TransformColumns(Orders, {"Item", Text.Proper})
+in
+  #"Capitalized Each Word"
+            </code>
+          </pre>
+    </section>
+    <section class="main-section" id="Evaluation_model">
+      <header>
+        <h2>Evaluation model</h2>
+      </header>
+      <p>The evaluation model of the Power Query M formula language is modeled after the evaluation model commonly found in spreadsheets, where the order of calculations can be determined based on dependencies between the formulas in the cells.<br>
+        If you have written formulas in a spreadsheet such as Excel, you may recognize the formulas on the left will result in the values on the right when calculated:</p>
+      <div class="table-wrapper">
+        <table>
+          <tbody>
+            <tr>
+              <td></td>
+              <th scope="col">A</th>
+              <th scope="col">B</th>
+            </tr>
+            <tr>
+              <th scope="row">1</th>
+              <td>=A2*2</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>=A3+1</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>=1</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>In M, an expression can reference previous expressions by name, and the evaluation process will automatically determine the order in which referenced expressions are calculated.</p>
+      <p>Let’s use a record to produce an expression which is equivalent to the above spreadsheet example. When initializing the value of a field, you refer to other fields within the record by the name of the field, as follows:</p>
+      <pre>
+            <code>
+[
+  A1 = A2 * 2,
+  A2 = A3 + 1,
+  A3 = 1
+]
+            </code>
+          </pre>
+      <p>The above expression evaluates to the following record:</p>
+      <div class="table-wrapper">
+        <table>
+          <tbody>
+            <tr>
+              <td><Strong>A1</Strong></td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td><Strong>A2</Strong></td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td><Strong>A3</Strong></td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Records can be contained within, or <strong>nested</strong>, within other records. You can use the <strong>lookup operator</strong> ([ ]) to access the fields of a record by name. For example, the following record has a field named Sales containing a record, and a field named Total that accesses the FirstHalf and SecondHalf fields of the Sales record:</p>
+      <pre>
+            <code>
+[
+  Sales = [ FirstHalf = 1000, SecondHalf = 1100 ],
+  Total = Sales[FirstHalf] + Sales[SecondHalf]
+]
+            </code>
+          </pre>
+      <p>The above expression evaluates to the following record:</p>
+      <div class="table-wrapper">
+        <table>
+          <tbody>
+            <tr>
+              <td rowspan="2"><Strong>Sales</Strong></td>
+              <td><strong>FirstHalf</strong></td>
+              <td>1000</td>
+            </tr>
+            <tr>
+              <td><strong>SecondHalf</strong></td>
+              <td>1100</td> 
+            </tr>
+            <tr>
+              <td><Strong>Total</Strong></td>
+              <td colspan="2">2100</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>You use the <strong>positional index operator</strong> ({ }) to access an item in a list by its numeric index. The values within a list are referred to using a zero-based index from the beginning of the list. For example, the indexes 0 and 1 are used to reference the first and second items in the list below:</p>
+      <pre>
+            <code>
+[
+  Sales =
+    {
+      [
+        Year = 2007,
+        FirstHalf = 1000,
+        SecondHalf = 1100,
+        Total = FirstHalf + SecondHalf // equals 2100
+      ],
+      [
+        Year = 2008,
+        FirstHalf = 1200,
+        SecondHalf = 1300,
+        Total = FirstHalf + SecondHalf // equals 2500
+      ]
+    },
+  #"Total Sales" = Sales{0}[Total] + Sales{1}[Total] // equals 4600
+]
+            </code>
+          </pre>
+      <h3>Lazy and eager evaluation</h3>
+      <p><strong>List</strong>, <strong>Record</strong>, and <strong>Table</strong> member expressions, as well as <strong>let</strong> expressions (See <a href="#Expressions_and_values">Expressions and values</a>), are evaluated using <strong>lazy evaluation</strong>: they are evaluated when needed. All other expressions are evaluated using <strong>eager evaluation</strong>: they are evaluated immediately, when encountered during the evaluation process. A good way to think about this is to remember that evaluating a list or record expression will return a list or record value that knows how its list items or record fields need to computed, when requested (by lookup or index operators).</p>
+    </section>
+    <section class="main-section" id="Operators">
+      <header>
+        <h2>Operators</h2>
+      </header>
+      <p>The Power Query M formula language includes a set of operators that can be used in an expression. <strong>Operators</strong> are applied to <strong>operands</strong> to form symbolic expressions. For example, in the expression 1 + 2 the numbers 1 and 2 are operands and the operator is the addition operator (+).</p>
+      <p>The meaning of an operator can vary depending on the type of operand values. The language has the following operators:</p>
+      <h3>Plus operator (+)</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Expression</th>
+              <th scope="col">Equals</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1 + 2</td>
+              <td>Numeric addition: 3</td>
+            </tr>
+            <tr>
+              <td>#time(12,23,0) + #duration(0,0,2,0)</td>
+              <td>Time arithmetic: #time(12,25,0)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Combination operator (&)</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Function</th>
+              <th scope="col">Equals</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>"A" & "BC"</td>
+              <td>Text concatenation: "ABC"</td>
+            </tr>
+            <tr>
+              <td>{1} & {2, 3}</td>
+              <td>List concatenation: {1, 2, 3}</td>
+            </tr>
+            <tr>
+              <td>[ a = 1 ] & [ b = 2 ]</td>
+              <td>Record merge: [ a = 1, b = 2 ]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>List of M operators</h3>
+      <p><strong>Common operators</strong> which apply to null, logical, number, time, date, datetime, datetimezone, duration, text, binary)</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>&gt;</td>
+              <td>Greater than</td>
+            </tr>
+            <tr>
+              <td>&gt;=</td>
+              <td>Greater than or equal</td>
+            </tr>
+            <tr>
+              <td>&lt;</td>
+              <td>Less than</td>
+            </tr>
+            <tr>
+              <td>&lt;=</td>
+              <td>Less than or equal</td>
+            </tr>
+            <tr>
+              <td>=</td>
+              <td>Equal</td>
+            </tr>
+            <tr>
+              <td>&lt;&gt;</td>
+              <td>Not equal</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Logical operators</strong> (In addition to <strong>Common operators</strong>)</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>or</td>
+              <td>Conditional logical OR</td>
+            </tr>
+            <tr>
+              <td>and</td>
+              <td>Conditional logical AND</td>
+            </tr>
+            <tr>
+              <td>not</td>
+              <td>Logical NOT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Number operators</strong> (In addition to <strong>Common operators</strong>)</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>+</td>
+              <td>Sum</td>
+            </tr>
+            <tr>
+              <td>-</td>
+              <td>Difference</td>
+            </tr>
+            <tr>
+              <td>*</td>
+              <td>Product</td>
+            </tr>
+            <tr>
+              <td>/</td>
+              <td>Quotient</td>
+            </tr>
+            <tr>
+              <td>+x</td>
+              <td>Unary plus</td>
+            </tr>
+            <tr>
+              <td>-x</td>
+              <td>Negation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Text operators</strong> (In addition to <strong>Common operators</strong>)</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>&amp;</td>
+              <td>Concatenation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>List, record, table operators</strong></p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>=</td>
+              <td>Equal</td>
+            </tr>
+            <tr>
+              <td>&lt;&gt;</td>
+              <td>Not equal</td>
+            </tr>
+            <tr>
+              <td>&amp;</td>
+              <td>Concatenation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Record lookup operator</strong></p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>[]</td>
+              <td>Access the fields of a record by name.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>List indexer operator</strong></p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{}</td>
+              <td>Access an item in a list by its zero-based numeric index.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Type compatibility and assertion operators</strong></p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>is</td>
+              <td>The expression x is y returns true if the type of x is compatible with y, and returns false if the type of x is not
+                compatible with y.</td>
+            </tr>
+            <tr>
+              <td>as</td>
+              <td>The expression x as y asserts that the value x is compatible with y as per the is operator.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Date operators</strong></p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Left Operand</th>
+              <th scope="col">Right Operand</th>
+              <th scope="col">Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>x + y</td>
+              <td>time</td>
+              <td>duration</td>
+              <td>Date offset by duration</td>
+            </tr>
+            <tr>
+              <td>x + y</td>
+              <td>duration</td>
+              <td>time</td>
+              <td>Date offset by duration</td>
+            </tr>
+            <tr>
+              <td>x - y</td>
+              <td>time</td>
+              <td>duration</td>
+              <td>Date offset by negated duration</td>
+            </tr>
+            <tr>
+              <td>x - y</td>
+              <td>time</td>
+              <td>time</td>
+              <td>Duration between dates</td>
+            </tr>
+            <tr>
+              <td>x &amp; y</td>
+              <td>date</td>
+              <td>time</td>
+              <td>Merged datetime</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Datetime operators</strong></p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Left Operand</th>
+              <th scope="col">Right Operand</th>
+              <th scope="col">Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>x + y</td>
+              <td>datetime</td>
+              <td>duration</td>
+              <td>Datetime offset by duration</td>
+            </tr>
+            <tr>
+              <td>x + y</td>
+              <td>duration</td>
+              <td>datetime</td>
+              <td>Datetime offset by duration</td>
+            </tr>
+            <tr>
+              <td>x - y</td>
+              <td>datetime</td>
+              <td>duration</td>
+              <td>Datetime offset by negated duration</td>
+            </tr>
+            <tr>
+              <td>x - y</td>
+              <td>datetime</td>
+              <td>datetime</td>
+              <td>Duration between datetimes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Datetimezone operators</strong></p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Left Operand</th>
+              <th scope="col">Right Operand</th>
+              <th scope="col">Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>x + y</td>
+              <td>datetimezone</td>
+              <td>duration</td>
+              <td>Datetimezone offset by duration</td>
+            </tr>
+            <tr>
+              <td>x + y</td>
+              <td>duration</td>
+              <td>datetimezone</td>
+              <td>Datetimezone offset by duration</td>
+            </tr>
+            <tr>
+              <td>x - y</td>
+              <td>datetimezone</td>
+              <td>duration</td>
+              <td>Datetimezone offset by negated duration</td>
+            </tr>
+            <tr>
+              <td>x - y</td>
+              <td>datetimezone</td>
+              <td>datetimezone</td>
+              <td>Duration between datetimezones</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Duration operators</strong></p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Operator</th>
+              <th scope="col">Left Operand</th>
+              <th scope="col">Right Operand</th>
+              <th scope="col">Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>x + y</td>
+              <td>datetime</td>
+              <td>duration</td>
+              <td>Datetime offset by duration</td>
+            </tr>
+            <tr>
+              <td>x + y</td>
+              <td>duration</td>
+              <td>datetime</td>
+              <td>Datetime offset by duration</td>
+            </tr>
+            <tr>
+              <td>x + y</td>
+              <td>duration</td>
+              <td>duration</td>
+              <td>Sum of durations</td>
+            </tr>
+            <tr>
+              <td>x - y</td>
+              <td>datetime</td>
+              <td>duration</td>
+              <td>Datetime offset by negated duration</td>
+            </tr>
+            <tr>
+              <td>x - y</td>
+              <td>datetime</td>
+              <td>datetime</td>
+              <td>Duration between datetimes</td>
+            </tr>
+            <tr>
+              <td>x - y</td>
+              <td>duration</td>
+              <td>duration</td>
+              <td>Difference of durations</td>
+            </tr>
+            <tr>
+              <td>x * y</td>
+              <td>duration</td>
+              <td>number</td>
+              <td>N times a duration</td>
+            </tr>
+            <tr>
+              <td>x * y</td>
+              <td>number</td>
+              <td>duration</td>
+              <td>N times a duration</td>
+            </tr>
+            <tr>
+              <td>x / y</td>
+              <td>duration</td>
+              <td>number</td>
+              <td>Fraction of a duration</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Note: </strong>Not all combinations of values may be supported by an operator. Expressions that, when evaluated, encounter undefined operator conditions evaluate to errors. For more information about errors in M, see <a href="#Errors">Errors</a>.</p>
+      <p><strong>Error example</strong>:</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Function</th>
+              <th scope="col">Equals</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1 + "2"</td>
+              <td>Error: adding number and text is not supported</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="main-section" id="Type_conversion">
+      <header>
+        <h2>Type conversion</h2>
+      </header>
+      <p>The Power Query M formula language has formulas to convert between types. The following is a summary of conversion formulas in M.</p>
+      <h3>Number</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Type conversion</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Number.FromText(text as text) as number</td>
+              <td>Returns a number value from a text value.</td>
+            </tr>
+            <tr>
+              <td>Number.ToText(number as number) as text</td>
+              <td>Returns a text value from a number value.</td>
+            </tr>
+            <tr>
+              <td>Number.From(value as any) as number</td>
+              <td>Returns a number value from a value.</td>
+            </tr>
+            <tr>
+              <td>Int32.From(value as any) as number</td>
+              <td>Returns a 32-bit integer number value from the given value.</td>
+            </tr>
+            <tr>
+              <td>Int64.From(value as any) as number</td>
+              <td>Returns a 64-bit integer number value from the given value.</td>
+            </tr>
+            <tr>
+              <td>Single.From(value as any) as number</td>
+              <td>Returns a Single number value from the given value.</td>
+            </tr>
+            <tr>
+              <td>Double.From(value as any) as number</td>
+              <td>Returns a Double number value from the given value.</td>
+            </tr>
+            <tr>
+              <td>Decimal.From(value as any) as number</td>
+              <td>Returns a Decimal number value from the given value.</td>
+            </tr>
+            <tr>
+              <td>Currency.From(value as any) as number</td>
+              <td>Returns a Currency number value from the given value.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Text</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Type conversion</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Text.From(value as any) as text</td>
+              <td>Returns the text representation of a number, date, time, datetime, datetimezone, logical, duration or binary value.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Logical</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Type conversion</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Logical.FromText(text as text) as logical</td>
+              <td>Returns a logical value of true or false from a text value.</td>
+            </tr>
+            <tr>
+              <td>Logical.ToText(logical as logical) as text</td>
+              <td>Returns a text value from a logical value.</td>
+            </tr>
+            <tr>
+              <td>Logical.From(value as any) as logical</td>
+              <td>Returns a logical value from a value.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Date, Time, DateTime, and DateTimeZone</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Type conversion</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>.FromText(text as text) as date, time, datetime, or datetimezone</td>
+              <td>Returns a date, time, datetime, or datetimezone value from a set of date formats and culture value.</td>
+            </tr>
+            <tr>
+              <td>.ToText(date, time, dateTime, or dateTimeZone as<br>
+                date, time, datetime, or datetimezone) as text</td>
+              <td>Returns a text value from a date, time, datetime, or datetimezone value.</td>
+            </tr>
+            <tr>
+              <td>.From(value as any)</td>
+              <td>Returns a date, time, datetime, or datetimezone value from a value.</td>
+            </tr>
+            <tr>
+              <td>.ToRecord(date, time, dateTime, or dateTimeZone as date, time, datetime, or datetimezone)</td>
+              <td>Returns a record containing parts of a date, time, datetime, or datetimezone value.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="main-section" id="Metadata">
+      <header>
+        <h2>Metadata</h2>
+      </header>
+      <p><strong>Metadata</strong> is information about a value that is associated with a value. <strong>Metadata</strong> is represented as a record value, called a metadata record. The fields of a <strong>metadata record</strong> can be used to store the metadata for a value. Every value has a metadata record. If the value of the metadata record has not been specified, then the metadata record is empty (has no fields). Associating a metadata record with a value does not change the value’s behavior in evaluations except for those that explicitly inspect metadata records.</p>
+      <p>A metadata record value is associated with a value x using the syntax <code>value meta [record]</code>. For example, the following associates a metadata record with Rating and Tags fields with the text value "Mozart":</p>
+      <pre>
+            <code>
+"Mozart" meta [
+  Rating = 5,
+  Tags = {"Classical"}
+]
+            </code>
+          </pre>
+      <p>A metadata record can be accessed for a value using the <code>Value.Metadata</code> function. In the following example, the expression in the ComposerRating field accesses the metadata record of the value in the Composer field, and then accesses the Rating field of the metadata record.</p>
+      <pre>
+            <code>
+[
+  Composer = "Mozart" meta [
+    Rating = 5,
+    Tags = {"Classical"}
+  ],
+  ComposerRating = Value.Metadata(Composer)[Rating]   // 5
+]
+            </code>
+          </pre>
+      <p>Metadata records are not preserved when a value is used with an operator or function that constructs a new value. For example, if two text values are concatenated using the & operator, the metadata of the resulting text value is an empty record [].</p>
+      <p>The standard library functions <code>Value.RemoveMetadata</code> and <code>Value.ReplaceMetadata</code> can be used to remove all metadata from a value and to replace a value’s metadata.</p>
+    </section>
+    <section class="main-section" id="Errors">
+      <header>
+        <h2>Errors</h2>
+      </header>
+      <p>An <strong>error</strong> in Power Query M formula language is an indication that the process of evaluating an expression could not produce a value. Errors are raised by operators and functions encountering <strong>error</strong> conditions or by using the <strong>error</strong> expression. Errors are handled using the <strong>try</strong> expression. When an error is raised, a value is specified that can be used to indicate why the error occurred.</p>
+      <h3>Try expression</h3>
+      <p>A try expression converts values and errors into a record value that indicates whether the try expression handled an error, or not, and either the proper value or the error record it extracted when handling the error. For example, consider the following expression that raises an error and then handles it right away:</p>
+      <pre>
+            <code>
+try error "negative unit count"
+            </code>
+          </pre>
+      <p>This expression evaluates to the following nested record value, explaining the <code>[HasError]</code>, <code>[Error]</code>, and <code>[Message]</code> field lookups in the <a href="#Error_example">unit-price example below</a>.</p>
+      <h3>Error record</h3>
+      <pre>
+            <code>
+[
+  HasError = true,
+  Error =
+  [
+    Reason = "Expression.Error",
+    Message = "negative unit count",
+    Detail = null
+  ]
+]
+            </code>
+          </pre>
+      <p>A common case is to replace errors with default values. The <code>try</code> expression can be used with an optional <code>otherwise</code> clause to achieve just that in a compact form:</p>
+      <pre>
+            <code>
+try error "negative unit count" otherwise 42  // equals 42 
+            </code>
+          </pre>
+      <h3 id="Error_example">Error example</h3>
+      <pre>
+            <code>
+let Sales =
+  [
+    ProductName = "Fishing rod",
+    Revenue = 2000,
+    Units = 1000,
+    UnitPrice =
+      if Units = 0 then
+        error "No Units"
+      else
+        Revenue / Units
+  ],
+
+//Get UnitPrice from Sales record
+  textUnitPrice = try Number.ToText(Sales[UnitPrice]),
+  Label = "Unit Price: " & (
+    if textUnitPrice[HasError] then
+      textUnitPrice[Error][Message]
+//Continue expression flow
+    else
+      textUnitPrice[Value]
+  )
+in
+  Label
+            </code>
+          </pre>
+      <p>The above example accesses the <code>Sales[UnitPrice]</code> field and formats the value producing the result:</p>
+      <pre>
+            <code>
+"Unit Price: 2"
+            </code>
+          </pre>
+      <p>If the Units field had been zero, then the <code>UnitPrice</code> field would have raised an <strong>error</strong> which would have been handled by the <strong>try</strong>. The resulting value would then have been:</p>
+      <pre>
+            <code>
+"Unit Price: No Units"
+            </code>
+          </pre>
+    </section>
+  </main>
+</div>
+<footer>
+  <p>The content for this documentation was taken from <a href="https://msdn.microsoft.com/en-us/library/mt270258.aspx" target="_blank">MSDN</a>.</p>
+</footer>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
