@@ -21,13 +21,13 @@ body {
 }
 
 header {
-  height: 40%;
+  height: 32%;
   padding: 10px;
   border-bottom: 3px solid black;
 }
 
 main {
-  height: 50%;
+  height: 58%;
   font-size: 1.5em;
 }
 
@@ -58,5 +58,5 @@ h3 {
 
 ul {
   list-style-type: none;
-  padding: 25px 0;
+  padding: 10px 0;
 }
