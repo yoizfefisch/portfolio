@@ -1,42 +1,49 @@
-body {
-    box-sizing: border-box;
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 1vh 1vw;
-}
-
-.wrapper {
-  font-family: 'Open Sans', sans-serif;
-  height: 98%;
-  width: 98%;
-  margin: auto;
+* {
   box-sizing: border-box;
-  background-color: #ccc;
-  border-radius: 10px;
+  margin: 0;
+  border: 0;
+  padding: 0;
   text-align: center;
   overflow: hidden;
 }
 
-h1, h2 {
-  font-family: 'Oswald', sans-serif;
+body {
+    height: 100vh;
+    width: 100vw;
+    padding: 1vh 1vw;
+}
+
+.wrapper {
+  height: 100%;
+  width: 100%;
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+header {
+  height: 30%;
+  padding: 10px;
+  border-bottom: 3px solid black;
+}
+
+main {
+  height: 60%;
+  font-size: 1.5em;
+}
+
+footer {
+  height: 10%;
+  border-top: 1px solid black;
 }
 
 h1 {
-  margin-bottom: 0;
   font-size: 3.5em;
   font-weight: 900;
 }
 
 h2 {
-  margin-top: 0;
   font-weight: 400;
   font-style: italic;
-}
-
-hr {
-  max-width:90%;
-  border-color: #000;
 }
 
 h3 {
@@ -49,25 +56,7 @@ h3 {
   font-weight: 600;
 }
 
-.tribute-par, .tribute-lst {
-  max-width: 80%;
-  margin: auto;
-  text-align: right;
-  font-size: 1.1em;
-}
-
 ul {
   list-style-type: none;
   padding: 25px 0;
-}
-
-.year {
-  font-style: normal;
-  font-weight: 900;
-}
-
-footer {
-  font-family: cursive;
-  
-  font-weight: 400;
 }
